@@ -10,9 +10,11 @@
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
-    "react-router": "^4.2.0"
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
+    "babel-plugin-react-html-attrs": "^2.1.0",
     "webpack-dev-server": "2.11.2"
   }
 }

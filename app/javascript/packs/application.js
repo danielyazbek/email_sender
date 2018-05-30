@@ -11,23 +11,12 @@ import 'bootstrap'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Router, Route, IndexRoute, hashHistory } from 'react-router'
-import PropTypes from 'prop-types';
+import { BrowserRouter } from 'react-router-dom';
+import App from './components/layout/App'
 
 const app = document.getElementById('app');
-
-const Hello = props => (
-  <div className="">Hello {props.name}!</div>
-)
-
-Hello.defaultProps = {
-  name: 'David'
-}
-
-Hello.propTypes = {
-  name: PropTypes.string
-}
-
-ReactDOM.render(
-    <Hello name="React" />,
-    app);
+ReactDOM.render((
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+), app);

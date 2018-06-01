@@ -39,21 +39,20 @@ RSpec.describe SendAttempt, type: :model do
       expect(send_attempt).not_to be_valid
     end
 
-    it 'is invalid without a unique attempt value' do
-      send_attempt_2 = create :send_attempt, email: email
-      send_attempt_2.attempt = send_attempt.attempt
-      expect(send_attempt_2).not_to be_valid
+    it 'is invalid without a successful' do
+      send_attempt.successful = nil
+      expect(send_attempt).not_to be_valid
     end
   end
 
   describe 'Attempt' do
-    let(:email) {create :email}
-    let(:send_attempt) {create :send_attempt, email: email}
+    let!(:email) {create :email}
+    let!(:send_attempt) {create :send_attempt, email: email}
     it 'is initialized automatically' do
       expect(send_attempt.attempt).to be 1
-      second = create :send_attempt, email: email
+      second = SendAttempt.create! email: email
       expect(second.attempt).to be 2
-      third = create :send_attempt, email: email
+      third = SendAttempt.create! email: email
       expect(third.attempt).to be 3
     end
   end
@@ -63,9 +62,9 @@ RSpec.describe SendAttempt, type: :model do
     let(:send_attempt) {create :send_attempt, email: email}
     it 'it rotates automatically' do
       expect(send_attempt.sendgrid?).to be true
-      second = create :send_attempt, email: email
+      second = SendAttempt.create! email: email
       expect(second.mailgun?).to be true
-      third = create :send_attempt, email: email
+      third = SendAttempt.create! email: email
       expect(third.sendgrid?).to be true
     end
   end

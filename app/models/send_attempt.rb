@@ -4,10 +4,11 @@ class SendAttempt < ApplicationRecord
   belongs_to :email
 
   validates :email, presence: true
-  validates :provider, presence: true, inclusion: { in: providers.keys }
-  validates :attempt, presence: true, numericality: { only_integer: true, greater_than: 0 }, uniqueness: { scope: :email }
+  validates :provider, presence: true, inclusion: { in: providers.keys }, on: :update
+  validates :attempt, presence: true, numericality: { only_integer: true, greater_than: 0 }, uniqueness: { scope: :email }, on: :update
+  validates :successful, inclusion: { in: [true, false] }
 
-  before_validation :init_attempt, on: :create
+  before_create :init_attempt
 
   private
 

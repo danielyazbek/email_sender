@@ -6,6 +6,7 @@ FactoryBot.define do
       num_bcc 0
     end
 
+    from_address { Faker::Internet.email }
     to_addresses { Array.new(num_to) {Faker::Internet.email} }
     cc_addresses { Array.new(num_cc) {Faker::Internet.email} }
     bcc_addresses { Array.new(num_bcc) {Faker::Internet.email} }

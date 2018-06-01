@@ -16,11 +16,13 @@ ActiveRecord::Schema.define(version: 2018_05_31_114446) do
   enable_extension "plpgsql"
 
   create_table "emails", force: :cascade do |t|
+    t.string "from_address"
     t.text "to_addresses"
     t.text "cc_addresses"
     t.text "bcc_addresses"
     t.text "subject"
     t.text "body"
+    t.string "aasm_state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -29,6 +31,9 @@ ActiveRecord::Schema.define(version: 2018_05_31_114446) do
     t.bigint "email_id"
     t.integer "provider"
     t.integer "attempt"
+    t.string "provider_id"
+    t.string "provider_message"
+    t.boolean "successful", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email_id"], name: "index_send_attempts_on_email_id"

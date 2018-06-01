@@ -38,12 +38,16 @@ gem 'jbuilder', '~> 2.5'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
+gem 'aasm'
+gem 'dotenv-rails'
+gem 'faraday'
+gem 'faraday_middleware'
+gem 'haml-rails'
+gem 'sidekiq'
 
 gem 'pry'
 gem 'pry-rails'
 gem 'pry-coolline'
-gem 'dotenv-rails'
-gem 'haml-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

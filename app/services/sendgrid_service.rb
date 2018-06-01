@@ -24,18 +24,19 @@ module SendgridService
 
   def self.connection
     Faraday.new(url: ENV['SENDGRID_URL']) do |f|
+      # f.response :logger
       f.adapter Faraday.default_adapter
     end
   end
 
   def self.build_request_body(email)
     {}.tap do |req|
-      req[:personalizations] = [{
-        to: email.to_addresses.map{|to_address| {email: to_address} },
-        cc: email.cc_addresses.map{|cc_address| {email: cc_address} },
-        bcc: email.bcc_addresses.map{|bcc_address| {email: bcc_address} },
-        subject: email.subject
-      }]
+      req[:personalizations] = [{}.tap do |p|
+        p[:to] = email.to_addresses.map{|to_address| {email: to_address} }
+        p[:cc] = email.cc_addresses.map{|cc_address| {email: cc_address} } if email.cc_addresses.any?
+        p[:bcc] = email.bcc_addresses.map{|bcc_address| {email: bcc_address} } if email.bcc_addresses.any?
+        p[:subject] = email.subject
+      end]
       req[:from] = {email: email.from_address}
       req[:content] = [{
         type: 'text/plain',

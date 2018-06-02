@@ -4,10 +4,11 @@ Rails.application.routes.draw do
   root to: 'home#index'
   namespace :api do
     namespace :v1 do
-      resources :emails, only: :create
+      resources :emails, only: [:index, :create]
     end
   end
 
+  # Obviously this wouldn't be publicly accessible in a read world scenario
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
 end

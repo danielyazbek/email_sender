@@ -39,6 +39,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'aasm'
+gem 'active_model_serializers'
 gem 'dotenv-rails'
 gem 'faraday'
 gem 'faraday_middleware'

@@ -55,4 +55,8 @@ RSpec.describe Api::V1::EmailsController, type: :controller do
     end
   end
 
+  describe 'GET index' do
+    pending
+  end
+
 end

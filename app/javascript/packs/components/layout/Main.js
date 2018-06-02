@@ -6,10 +6,12 @@ import Send from '../../pages/Send'
 
 const Main = () => (
   <main>
-    <Switch>
-      <Route exact path='/' component={Home}/>
-      <Route path='/send' component={Send}/>
-    </Switch>
+    <div className="container">
+      <Switch>
+        <Route exact path='/' component={Home}/>
+        <Route path='/send' component={Send}/>
+      </Switch>
+    </div>
   </main>
 );
 

@@ -2,6 +2,11 @@ class Api::V1::EmailsController < ApplicationController
 
   skip_before_action :verify_authenticity_token
 
+  def index
+    emails = Email.all.order(updated_at: :desc)
+    json_response(ActiveModelSerializers::SerializableResource.new(emails, {}).to_json)
+  end
+
   def create
     email = Email.new(email_params)
     if email.save

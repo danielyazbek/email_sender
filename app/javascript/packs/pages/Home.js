@@ -10,8 +10,20 @@ import TableRow from "../components/email/TableRow";
   };
 })
 export default class Home extends React.Component {
+  loadData() {
+    this.props.dispatch(fetchEmails());
+  }
+
   componentWillMount() {
-    this.props.dispatch(fetchEmails())
+    this.loadData();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
+  componentDidMount() {
+    this.intervalId = setInterval(this.loadData.bind(this), 3000);
   }
 
   render() {

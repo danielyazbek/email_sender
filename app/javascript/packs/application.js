@@ -11,7 +11,7 @@ import 'bootstrap'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux';
 
 import App from './components/layout/App'
@@ -20,8 +20,8 @@ import Store from './store/Store'
 const app = document.getElementById('app');
 ReactDOM.render((
   <Provider store={Store}>
-    <BrowserRouter>
+    <HashRouter>
       <App />
-    </BrowserRouter>
+    </HashRouter>
   </Provider>
 ), app);

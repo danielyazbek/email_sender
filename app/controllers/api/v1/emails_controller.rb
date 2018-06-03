@@ -11,7 +11,7 @@ class Api::V1::EmailsController < ApplicationController
     email = Email.new(email_params)
     if email.save
       EmailDeliveryWorker.perform_async(email.id)
-      json_response(id: email.id)
+      json_response({id: email.id})
     else
       json_response({errors: email.errors}, :bad_request)
     end

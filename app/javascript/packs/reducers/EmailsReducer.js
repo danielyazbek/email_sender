@@ -21,6 +21,12 @@ export default function reducer(state={
         emails: action.payload,
       }
     }
+    case "@@redux-form/SET_SUBMIT_SUCCEEDED": {
+      return {...state, submitted: true}
+    }
+    case "@@redux-form/DESTROY": {
+      return {...state, submitted: false}
+    }
   }
   return state
 };

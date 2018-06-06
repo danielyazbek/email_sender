@@ -44,7 +44,7 @@ RSpec.describe SendgridService, type: :service do
 
       success, message = SendgridService.send_email(email, sendgrid_attempt)
       expect(success).to be false
-      expect(message).to eq 'Mail not be delivered via Sendgrid. Response status: 400'
+      expect(message).to eq 'Mail not delivered via Sendgrid. Response status: 400'
       expect(sendgrid_attempt.successful).to be false
       expect(sendgrid_attempt.provider_id).to be nil
       expect(sendgrid_attempt.provider_message).to be nil

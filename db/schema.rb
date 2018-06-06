@@ -10,16 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_31_114446) do
+ActiveRecord::Schema.define(version: 2018_05_31_115420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "email_addresses", force: :cascade do |t|
+    t.string "email"
+    t.bigint "from_email_id"
+    t.bigint "to_email_id"
+    t.bigint "cc_email_id"
+    t.bigint "bcc_email_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bcc_email_id"], name: "index_email_addresses_on_bcc_email_id"
+    t.index ["cc_email_id"], name: "index_email_addresses_on_cc_email_id"
+    t.index ["from_email_id"], name: "index_email_addresses_on_from_email_id"
+    t.index ["to_email_id"], name: "index_email_addresses_on_to_email_id"
+  end
+
   create_table "emails", force: :cascade do |t|
-    t.string "from_address"
-    t.text "to_addresses"
-    t.text "cc_addresses"
-    t.text "bcc_addresses"
     t.text "subject"
     t.text "body"
     t.string "aasm_state"

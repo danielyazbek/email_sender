@@ -1,19 +1,21 @@
 class Email < ApplicationRecord
   include AASM
 
+  has_one :from, class_name: 'EmailAddress', foreign_key: 'from_email_id'
+  has_many :to, class_name: 'EmailAddress', foreign_key: 'to_email_id', index_errors: true
+  has_many :cc, class_name: 'EmailAddress', foreign_key: 'cc_email_id', index_errors: true
+  has_many :bcc, class_name: 'EmailAddress', foreign_key: 'bcc_email_id', index_errors: true
   has_many :send_attempts
 
-  serialize :to_addresses, Array
-  serialize :cc_addresses, Array
-  serialize :bcc_addresses, Array
+  accepts_nested_attributes_for :from
+  accepts_nested_attributes_for :to
+  accepts_nested_attributes_for :cc
+  accepts_nested_attributes_for :bcc
 
-  validates :from_address, presence: true, email_address: true
-  validates :to_addresses, presence: true, email_addresses: true
-  validates :cc_addresses, email_addresses: true
-  validates :bcc_addresses, email_addresses: true
+  validates :from, presence: true
+  validates :to, presence: true
   validates :subject, presence: true
   validates :body, presence: true
-  validate :duplicate_addresses
 
   aasm do
     state :pending, initial: true
@@ -25,20 +27,6 @@ class Email < ApplicationRecord
 
     event :failed do
       transitions from: :pending, to: :unsuccessful
-    end
-  end
-
-  private
-
-  def duplicate_addresses
-    if (to_addresses & cc_addresses).any?
-      errors.add(:cc_addresses, 'contains a duplicate email already defined in \'to_addresses\'')
-    end
-    if (to_addresses & bcc_addresses).any?
-      errors.add(:bcc_addresses, 'contains a duplicate email already defined in \'to_addresses\'')
-    end
-    if (cc_addresses & bcc_addresses).any?
-      errors.add(:bcc_addresses, 'contains a duplicate email already defined in \'cc_addresses\'')
     end
   end
 end

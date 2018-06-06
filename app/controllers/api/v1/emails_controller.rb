@@ -3,7 +3,7 @@ class Api::V1::EmailsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    emails = Email.all.order(updated_at: :desc)
+    emails = Email.includes(:from, :to, :cc, :bcc).all.order(updated_at: :desc)
     json_response(ActiveModelSerializers::SerializableResource.new(emails, {}).to_json)
   end
 
@@ -13,14 +13,14 @@ class Api::V1::EmailsController < ApplicationController
       EmailDeliveryWorker.perform_async(email.id)
       json_response({id: email.id})
     else
-      json_response({errors: email.errors}, :bad_request)
+      json_response({errors: email.errors.full_messages}, :bad_request)
     end
   end
 
   private
 
   def email_params
-    params.permit(:from_address, :subject, :body, {to_addresses: []}, {cc_addresses: []}, {bcc_addresses: []})
+    params.permit(:subject, :body, from_attributes: [:email], to_attributes: [:email], cc_attributes: [:email], bcc_attributes: [:email])
   end
 
   def json_response(object, status = :ok)

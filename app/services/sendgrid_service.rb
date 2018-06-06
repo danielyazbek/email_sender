@@ -12,7 +12,7 @@ module SendgridService
     end
 
     unless response.success?
-      return false, "Mail not be delivered via Sendgrid. Response status: #{response.status}"
+      return false, "Mail not delivered via Sendgrid. Response status: #{response.status}"
     end
 
     id = response.headers["x-message-id"]
@@ -32,12 +32,12 @@ module SendgridService
   def self.build_request_body(email)
     {}.tap do |req|
       req[:personalizations] = [{}.tap do |p|
-        p[:to] = email.to_addresses.map{|to_address| {email: to_address} }
-        p[:cc] = email.cc_addresses.map{|cc_address| {email: cc_address} } if email.cc_addresses.any?
-        p[:bcc] = email.bcc_addresses.map{|bcc_address| {email: bcc_address} } if email.bcc_addresses.any?
+        p[:to] = email.to.map{|to| {email: to.email} }
+        p[:cc] = email.cc.map{|cc| {email: cc.email} } if email.cc.any?
+        p[:bcc] = email.bcc.map{|bcc| {email: bcc.email} } if email.bcc.any?
         p[:subject] = email.subject
       end]
-      req[:from] = {email: email.from_address}
+      req[:from] = {email: email.from.email}
       req[:content] = [{
         type: 'text/plain',
         value: email.body

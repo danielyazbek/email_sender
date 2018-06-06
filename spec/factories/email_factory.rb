@@ -6,12 +6,13 @@ FactoryBot.define do
       num_bcc 0
     end
 
-    from_address { Faker::Internet.email }
-    to_addresses { Array.new(num_to) {Faker::Internet.email} }
-    cc_addresses { Array.new(num_cc) {Faker::Internet.email} }
-    bcc_addresses { Array.new(num_bcc) {Faker::Internet.email} }
-
     subject { Faker::Movie.quote }
     body { Faker::Hipster.paragraph(5) }
+    after(:build) do |email, eval|
+      email.from = build(:email_address)
+      email.to = build_list(:email_address, eval.num_to)
+      email.cc = build_list(:email_address, eval.num_cc)
+      email.bcc = build_list(:email_address, eval.num_bcc)
+    end
   end
 end

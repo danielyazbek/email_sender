@@ -6,17 +6,17 @@ module MailgunService
     end
 
     response = connection.post do |request|
-      request.params['from'] = email.from_address
-      request.params['to'] = email.to_addresses
-      request.params['cc'] = email.cc_addresses
-      request.params['bcc'] = email.bcc_addresses
+      request.params['from'] = email.from.email
+      request.params['to'] = email.to.map{|e| e.email}
+      request.params['cc'] = email.cc.map{|e| e.email}
+      request.params['bcc'] = email.bcc.map{|e| e.email}
       request.params['subject'] = email.subject
       request.params['text'] = email.body
       request.options.params_encoder = Faraday::FlatParamsEncoder
     end
 
     unless response.success?
-      return false, "Mail not be delivered via Mailgun. Response status: #{response.status}"
+      return false, "Mail not delivered via Mailgun. Response status: #{response.status}"
     end
 
     id = response.body["id"]

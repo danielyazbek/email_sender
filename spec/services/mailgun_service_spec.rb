@@ -51,7 +51,7 @@ RSpec.describe MailgunService, type: :service do
 
       success, message = MailgunService.send_email(email, mailgun_attempt)
       expect(success).to be false
-      expect(message).to eq 'Mail not be delivered via Mailgun. Response status: 400'
+      expect(message).to eq 'Mail not delivered via Mailgun. Response status: 400'
       expect(mailgun_attempt.successful).to be false
       expect(mailgun_attempt.provider_id).to be nil
       expect(mailgun_attempt.provider_message).to be nil

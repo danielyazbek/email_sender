@@ -1,33 +1,40 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
-import {fetchEmails} from "../actions/EmailsActions";
 import TableRow from "../components/email/TableRow";
+import axios from "axios/index";
 
-@connect((store) => {
-  return {
-    emails: store.emails
-  };
-})
 export default class Home extends React.Component {
-  loadData() {
-    this.props.dispatch(fetchEmails());
+
+  constructor(props) {
+    super(props);
+    this.getEmails = this.getEmails.bind(this);
+    this.state = {emails: []}
+  }
+
+  getEmails() {
+    axios.get("/api/v1/emails")
+      .then((response) => {
+        this.setState({emails: response.data})
+      })
+      .catch((err) => {
+
+      })
   }
 
   componentWillMount() {
-    this.loadData();
+    this.getEmails();
+  }
+
+  componentDidMount() {
+    this.intervalId = setInterval(this.getEmails, 3000);
   }
 
   componentWillUnmount() {
     clearInterval(this.intervalId);
   }
 
-  componentDidMount() {
-    this.intervalId = setInterval(this.loadData.bind(this), 3000);
-  }
-
   render() {
-    const {emails} = this.props.emails;
+    const {emails} = this.state;
 
     if (!emails.length) {
       return <p>
